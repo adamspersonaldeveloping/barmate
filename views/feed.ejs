@@ -1,0 +1,27 @@
+<%- include('partials/header') -%>
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <a href="/feedZtoA" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">List Z - A</a>
+     
+     
+      <ul class="row list-unstyled">
+        <% for(var i=0; i<posts.length; i++) {%>
+          <li class="col-6 justify-content-between mt-5">
+            <h1 class="text-white justify-content-center"><%= posts[i].cocktailName %></h1>
+            <a href="/post/<%= posts[i]._id%>">
+              <img class="img-fluid" src="<%= posts[i].image%>">
+            </a>
+            
+            <!-- <form
+              class="col-1"
+              action="/post/favoritePost/<%= posts[i].id %>?_method=PUT"
+              method="POST"
+            >
+              <button class="btn btn-primary fa fa-heart" type="submit"></button>
+            </form> -->
+          </li>
+        <% } %>
+        </ul>
+    </div>
+  </div>  
+<%- include('partials/footer') -%>

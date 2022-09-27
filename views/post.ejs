@@ -1,0 +1,80 @@
+<%- include('partials/header') -%>
+<div class="container">
+  <div class="row justify-content-center mt-5 border">
+    <div class="col border">
+      <h2 class="display-5 fw-bold lh-1 mb-3 text-white"><%= post.cocktailName %></h2>
+      <img class="img-fluid" src="<%= post.image%>" />
+      <div class="row justify-content-center">
+        <!-- change the like to a favorite. give user an array for _id's that are from the post that they have liked. -->
+        <%if(!user.favorites.includes(post.id)){ %>
+          <form
+          class="row justify-content-center mt-3"
+          action="/post/favoritePost/<%= post.id %>?_method=PUT"
+          method="POST"
+        >
+          <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2" type="submit">Add to favorites</button>
+        </form>
+           <%}%>
+          <%if(user.favorites.includes(post.id)){ %>
+            <form
+          class="row justify-content-center mt-3"
+          action="/post/deleteFavorite/<%= post.id %>?_method=PUT"
+          method="POST"
+        >
+          <button class=" btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2" type="submit">Remove from favorites</button>
+        </form>
+            
+            <%}%>
+        
+       
+        <%if(post.user == user.id){ %>
+        <form
+        class="row justify-content-center mt-3"
+          action="/post/deletePost/<%= post.id %>?_method=DELETE"
+          method="POST" 
+        >
+          <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2" type="submit">Delete drink</button>
+        </form>
+        <%}%>
+        
+      </div>
+    </div>
+    <div class="col  ">
+      <div class="d-flex flex-column felx-wrap mt-5 text-center ">
+        <h3 class="text-white ">Ingredients</h3>
+        <ul class="row list-unstyled">
+          <% for(let i=0; i<post.ingredients.length; i++) {%>
+            <%if(post.ingredients[i] !== ''){ %>
+              <li class="text-secondary"><%= post.ingredients[i] %></li>
+            <%}%>
+            
+            <% } %>
+        </ul>
+      </div>
+      <div class=" mt-5 text-center">
+        <h3 class="text-white">Method</h3>
+        <p class="text-secondary"><%= post.method %></p>
+      </div>
+      <div class=" mt-5  text-center">
+        <h3 class="text-white">Garnish</h3>
+        <p class="text-secondary"><%= post.garnish %></p>
+      </div>
+      <div class="mt-5  text-center">
+        <h3 class="text-white">Note</h3>
+        <p class="text-secondary"><%= post.note %></p>
+      </div>
+      <%if(post.ibaCocktail == true){ %>
+        <div class="col-3  text-center">
+          <h3 class="text-white">IBA Standardize Cocktail</h3>
+          <p class="text-secondary"><%= post.importance %></p>
+        </div>
+        <%}%>
+    </div>
+  </div>
+  <div class="col mt-5">
+    <a class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold" href="/profile">Profile</a>
+    <a class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold" href="/feed">All Cocktails</a>
+  </div>
+</div>
+
+<%- include('partials/footer') -%>

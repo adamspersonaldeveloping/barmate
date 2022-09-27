@@ -1,0 +1,75 @@
+<%- include('partials/header') -%>
+<div class="container text-secondary">
+  <div class="row mt-5">
+      <div class="col-6">
+          <div>
+              <p><strong class="text-white">User Name</strong>: <%= user.userName %></p>
+              <p><strong class="text-white">Email</strong>: <%= user.email %></p>
+              <a href="/logout" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">Logout</a>
+          </div>
+          <div class="mt-5">
+            <h2 class="text-white">Add a drink</h2>
+            <form action="/post/createPost" enctype="multipart/form-data" method="POST">
+              <div class="mb-3">
+                  <label for="cocktailName" class="form-label">Drink Name</label>
+                  <input style="background:rgba(255,255,255,0.7)" type="text" class="form-control" id="cocktailName" name="cocktailName">
+              </div>
+              <div class="mb-3 ingredientContainer">
+                <label for="ingredient1">Ingredients(ex. 45ml Gin)</label>
+                <input type="text" placeholder="First Ingedient" name="ingredient1" class="form-control transBack"> 
+                <input type="text" placeholder="Second Ingedient" name="ingredient2" class="form-control transBack">
+                <input type="text" placeholder="Third Ingedient" name="ingredient3" class="form-control transBack">
+                <input type="text" placeholder="Fourth Ingedient"  name="ingredient4" class="form-control transBack">
+                <input type="text" placeholder="Fifth Ingedient" name="ingredient5" class="form-control transBack">
+                <input type="text" placeholder="Sixth Ingedient" name="ingredient6" class="form-control transBack">
+                <input type="text" placeholder="Seventh Ingedient" name="ingredient7" class="form-control transBack">
+                <input type="text" placeholder="Eigth Ingedient" name="ingredient8" class="form-control transBack">
+                <input type="text" placeholder="Nineth Ingedient" name="ingredient9" class="form-control transBack">
+                <input type="text" placeholder="Tenth Ingedient" name="ingredient10" class="form-control transBack">
+            </div>
+            <div class="mb-3">
+              <label for="method" class="form-label">Perperation</label>
+              <input style="background:rgba(255,255,255,0.7)" type="text" class="form-control" id="method" name="method">
+            </div>
+            <div class="mb-3">
+              <label for="garnish" class="form-label">Garnish</label>
+              <input style="background:rgba(255,255,255,0.7)" type="text" class="form-control" id="garnish" name="garnish">
+            </div>
+            <div class="mb-3">
+              <label for="note" class="form-label">Note</label>
+              <textarea style="background:rgba(255,255,255,0.7)" class="form-control" id="note" name="note"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="imgUpload" class="form-label">Image</label>
+              <input style="background:rgba(255,255,255,0.7)" type="file" class="form-control" id="imageUpload" name="file">
+            </div>
+            <div class="mb-3 form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+              <label class="form-check-label" for="flexSwitchCheckChecked">Recipes are public by default, turn switch off to make it private</label>
+            </div>
+              <button type="submit" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold" value="Upload">Submit</button>
+            </form>
+          </div>
+      </div>
+      <div class="col-6">
+        <ul class="row list-unstyled">
+        <% for(var i=0; i<posts.length; i++) {%>
+          <li class="col-6 justify-content-between mt-5">
+            <a href="/post/<%= posts[i]._id%>">
+              <img class="img-fluid" src="<%= posts[i].image%>">
+            </a>
+            <span class="text-white"><%= posts[i].cocktailName %></span>
+          </li>
+        <% } %>
+        </ul>
+        <div class="row justify-content-center mt-5">
+          <a class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold" href="/feed">All Cocktails</a>
+        </div>  
+        <div class="row justify-content-center mt-3">
+          <a class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold" href="/favorites">Favorites</a>
+        </div>
+      </div>  
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') -%>

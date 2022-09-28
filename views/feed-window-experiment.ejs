@@ -5,3 +5,18 @@
 <%if(window.location.pathname === "/feed"){ %>
    <a href="/feedZtoA" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">List Z - A</a>
     <%}%>
+
+<!-- to delete a forumPost if the user is the creater -->
+
+<div class="row justify-content-center">  
+
+ <%if(post.user == user.id){ %>
+        <form
+        class="row justify-content-center mt-3"
+          action="/post/deletePost/<%= post.id %>?_method=DELETE"
+          method="POST" 
+        >
+          <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2" type="submit">Delete drink</button>
+        </form>
+        <%}%>
+</div>

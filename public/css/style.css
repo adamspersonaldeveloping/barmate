@@ -4,6 +4,7 @@
 }
 .border{
     border: 3px red solid;
+    border-radius: 5px;
 }
 .container2{
     position: relative;

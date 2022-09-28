@@ -1,0 +1,35 @@
+<%- include('partials/header') -%>
+  <div class="container text-secondary">
+    <div class="row justify-content-center mt-5">
+
+        <div class="mt-5">
+            <h2 class="text-white">Post to the Forum</h2>
+            <form action="/forum/createForumPost" enctype="multipart/form-data" method="POST">
+                <div class="mb-3">
+                  <label for="title" class="form-label">Subject or Title</label>
+                  <input style="background:rgba(255,255,255,0.7)" type="text" class="form-control" id="title" name="title">
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea style="background:rgba(255,255,255,0.7)" class="form-control" id="message" name="message"></textarea>
+                </div>
+                <button type="submit" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold" value="Upload">Submit</button>
+            </form>
+          </div>
+      
+     
+      <ul class="row list-unstyled">
+        <% for(var i=0; i<ForumPosts.length; i++) {%>
+          <li class="col-6 justify-content-between mt-5 border">
+            <a class="text-decoration-none" href="/forum/<%= ForumPosts[i]._id%>">
+                <h1 class="text-white justify-content-center"><%= ForumPosts[i].title %></h1>
+                <span class="text-secondary">By: <%= ForumPosts[i].userName %></span>
+                <p class="img-fluid text-secondary"><%= ForumPosts[i].message.slice(0,200)%>...</p>
+            </a>
+            
+          </li>
+        <% } %>
+        </ul>
+    </div>
+  </div>  
+<%- include('partials/footer') -%>

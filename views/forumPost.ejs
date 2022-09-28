@@ -1,0 +1,28 @@
+<%- include('partials/header') -%>
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col border">
+      <h2 class="display-5 fw-bold lh-1 mb-3 text-white"><%= forumPost.title %></h2>
+      <h4 class="text-white">User Name: <span class="text-secondary"><%= forumPost.userName %></span></h4>
+      <p class="text-secondary"><%= forumPost.message %></p> 
+    </div>
+    <div class="row justify-content-center">  
+
+        <%if(forumPost.user == user.id){ %>
+               <form
+               class="row justify-content-center mt-3"
+                 action="/forum/deleteForumPost/<%= forumPost.id %>?_method=DELETE"
+                 method="POST" 
+               >
+                 <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2" type="submit">Delete Post</button>
+               </form>
+        <%}%>
+    </div>
+  </div>
+  <div class="col mt-5">
+    <a class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold" href="/profile">Profile</a>
+    <a class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold" href="/feed">All Cocktails</a>
+  </div>
+</div>
+
+<%- include('partials/footer') -%>

@@ -1,6 +1,7 @@
 const cloudinary = require("../middleware/cloudinary");
 const Forum = require("../models/Forum");
 const Post = require("../models/Post")
+const Comment = require("../models/Comment");
 
 
 module.exports = {
@@ -18,8 +19,9 @@ module.exports = {
   getForumPost: async (req, res) => {
     try {
       const forumPost = await Forum.findById(req.params.id);
-      res.render("forumPost.ejs", { forumPost: forumPost, user: req.user });
-      //console.log(post)
+      const comments = await Comment.find({forumPost: req.params.id}).sort({ createdAt: "desc" }).lean();
+      res.render("forumPost.ejs", { forumPost: forumPost, user: req.user, comments: comments  });
+      console.log(comments)
     } catch (err) {
       console.log(err);
     }

@@ -18,10 +18,42 @@
                </form>
         <%}%>
     </div>
+    <div class="mt-1 border">
+        <h2 class="text-white">Add a comment</h2>
+        <form action="/comment/createComment/<%=forumPost._id%>" method="POST">
+            <div class="mb-3">
+                <label for="comment" class="form-label text-secondary">Comment</label>
+                <input type="text" class="form-control" id="comment" name="comment">
+            </div>
+        <button type="submit" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2">Submit</button>
+        </form>
+    </div>
   </div>
+
+  <ul class="row list-unstyled">
+    <% for(var i=0; i<comments.length; i++) {%>
+      <li class="col-10 justify-content-between mt-2 text-secondary border">
+        <h6 class="text-white mt-1">Comment from: <span class="text-secondary"><%=comments[i].userName%></span></h6>
+        <p class="text-secondary"><%=comments[i].comment%></p>
+            <%if(comments[i].user == user.id){ %>
+                <form
+                  action="/comment/deleteComment/<%=comments[i]._id%>&<%=forumPost.id%>?_method=DELETE"
+                  method="POST"
+                  class="col-3"
+                
+                >
+                <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2 fa fa-trash" type="submit">Delete</button>
+            </form>
+          </li>
+        <%}%>
+      
+   
+    <% } %>
+  </ul>
   <div class="col mt-5">
     <a class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold" href="/profile">Profile</a>
     <a class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold" href="/feed">All Cocktails</a>
+    <a class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold" href="/forumFeed">Forum</a>
   </div>
 </div>
 

@@ -5,11 +5,11 @@
         <div class="mt-5">
             <h2 class="text-white">Post to the Forum</h2>
             <form action="/forum/createForumPost" enctype="multipart/form-data" method="POST">
-                <div class="mb-3">
+                <div class="mb-3 col-10">
                   <label for="title" class="form-label">Subject or Title</label>
                   <input style="background:rgba(255,255,255,0.7)" type="text" class="form-control" id="title" name="title">
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 col-10">
                     <label for="message" class="form-label">Message</label>
                     <textarea style="background:rgba(255,255,255,0.7)" class="form-control" id="message" name="message"></textarea>
                 </div>
@@ -20,7 +20,7 @@
      
       <ul class="row list-unstyled">
         <% for(var i=0; i<ForumPosts.length; i++) {%>
-          <li class="col-6 justify-content-between mt-5 border">
+          <li class="col-11 col-sm-5 justify-content-between mt-5 border">
             <a class="text-decoration-none" href="/forum/<%= ForumPosts[i]._id%>">
                 <h1 class="text-white justify-content-center"><%= ForumPosts[i].title %></h1>
                 <span class="text-secondary">By: <%= ForumPosts[i].userName %></span>

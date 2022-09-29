@@ -3,7 +3,7 @@
   <div class="row justify-content-center mt-5 border">
     <div class="col border">
       <h2 class="display-5 fw-bold lh-1 mb-3 text-white"><%= post.cocktailName %></h2>
-      <img class="img-fluid" src="<%= post.image%>" />
+      <img class="img-fluid" src="<%= post.image%>" alt="drink image not found" />
       <div class="row justify-content-center">
         <!-- change the like to a favorite. give user an array for _id's that are from the post that they have liked. -->
         <%if(!user.favorites.includes(post.id)){ %>

@@ -50,7 +50,7 @@ module.exports = {
     try {
       let result;
       if(req.file) result = await cloudinary.uploader.upload(req.file.path);
-      else result = {secure_url: 'https://res.cloudinary.com/dllmha3wx/image/upload/v1664239355/logo-barmate-not-found_n6dqgn.png', public_id: 'logo-barmate-not-found_n6dqgn'}
+      else result = {secure_url: 'https://res.cloudinary.com/dllmha3wx/image/upload/v1664446616/logo-barmate-not-found_kdvamw.png', public_id: 'logo-barmate-not-found_kdvamw'}
     
       await Post.create({
         cocktailName: req.body.cocktailName,

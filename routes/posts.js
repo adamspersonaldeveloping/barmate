@@ -13,6 +13,9 @@ router.put("/favoritePost/:id", postsController.favoritePost);
 
 router.put("/deleteFavorite/:id", postsController.deleteFavorite);
 
+router.put("/makePrivate/:id", postsController.makePrivate);
+
+router.put("/makePublic/:id", postsController.makePublic);
 
 router.delete("/deletePost/:id", postsController.deletePost);
 

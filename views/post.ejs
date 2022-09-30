@@ -35,6 +35,23 @@
         >
           <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2" type="submit">Delete drink</button>
         </form>
+          <% if(post.public == true){ %>
+            <form
+              class="row justify-content-center mt-3"
+              action="/post/makePrivate/<%= post.id %>?_method=PUT"
+              method="POST" 
+            >
+            <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2" type="submit">Mark Drink Hidden</button>
+            </form>
+          <% } else{ %>  
+            <form
+              class="row justify-content-center mt-3"
+              action="/post/makePublic/<%= post.id %>?_method=PUT"
+              method="POST" 
+            >
+            <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2" type="submit">Mark Drink Public</button>
+            </form>
+          <% } %>
         <%}%>
         
       </div>

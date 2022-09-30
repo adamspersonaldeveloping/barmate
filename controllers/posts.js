@@ -22,15 +22,18 @@ module.exports = {
   },
   getFeed: async (req, res) => {
     try {
-      const posts = await Post.find().sort({ cocktailName: 1 }).lean();
+      const allPosts = await Post.find().sort({ cocktailName: 1 }).lean();
+      const posts = allPosts.filter((e)=> e.public !== false)
       res.render("feed.ejs", { posts: posts });
+      
     } catch (err) {
       console.log(err);
     }
   },
   getFeedZtoA: async (req, res) => {
     try {
-      const posts = await Post.find().sort({ cocktailName: -1 }).lean();
+      const allPosts = await Post.find().sort({ cocktailName: -1 }).lean();
+      const posts = allPosts.filter((e)=> e.public !== false)
       res.render("feed.ejs", { posts: posts });
     } catch (err) {
       console.log(err);
@@ -72,7 +75,7 @@ module.exports = {
         image: result.secure_url,
         cloudinaryId: result.public_id,
         ibaCocktail: false,        
-        public: req.body.public,
+        public: req.body.public || 'true',
         user: req.user.id,
       });
       console.log(req.file)
@@ -91,7 +94,7 @@ module.exports = {
           $push: {favorites: req.params.id },
         }
       );
-      console.log(req.user, req.params)
+      
       console.log("Added to favorites");
       res.redirect(`/post/${req.params.id}`);
     } catch (err) {
@@ -99,7 +102,7 @@ module.exports = {
     }
   },
   deleteFavorite: async (req, res) => {
-    // change this to save the post id to an array under the User
+    // change this to delete the post id to an array under the User
     try {
       await User.findOneAndUpdate(
         { _id: req.user.id },
@@ -107,8 +110,40 @@ module.exports = {
           $pull: {favorites: req.params.id },
         }
       );
-      console.log(req.user, req.params)
+      
       console.log("Removed from favs");
+      res.redirect(`/post/${req.params.id}`);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  makePrivate: async (req, res) => {
+    // change this to save the post id to an array under the User
+    try {
+      await Post.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          $set: {public: false },
+        }
+      );
+      
+      console.log("made post private");
+      res.redirect(`/post/${req.params.id}`);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  makePublic: async (req, res) => {
+    // change this to save the post id to an array under the User
+    try {
+      await Post.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          $set: {public: true },
+        }
+      );
+      
+      console.log("made post public");
       res.redirect(`/post/${req.params.id}`);
     } catch (err) {
       console.log(err);

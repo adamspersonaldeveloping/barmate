@@ -7,6 +7,7 @@
      
       <ul class="row list-unstyled">
         <% for(var i=0; i<posts.length; i++) {%>
+          
           <li class="col-6 justify-content-between mt-5">
             <h1 class="text-white justify-content-center"><%= posts[i].cocktailName %></h1>
             <a href="/post/<%= posts[i]._id%>">
@@ -21,6 +22,7 @@
               <button class="btn btn-primary fa fa-heart" type="submit"></button>
             </form> -->
           </li>
+        
         <% } %>
         </ul>
     </div>

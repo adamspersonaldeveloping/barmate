@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row justify-content-center mt-5">
        
-      <a href="/feedZtoA" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">List Z - A</a>
+      <a href="<%= posts[posts.length-1].cocktailName.charCodeAt(0) > 100 ? '/feedZtoA' : '/feed'%>" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold"><%= posts[posts.length-1].cocktailName.charCodeAt(0) > 100 ? 'List Z - A' : 'List A - Z'%></a>
      
      
       <ul class="row list-unstyled">
@@ -14,13 +14,24 @@
               <img class="img-fluid" src="<%= posts[i].image%>">
             </a>
             
-            <!-- <form
-              class="col-1"
-              action="/post/favoritePost/<%= posts[i].id %>?_method=PUT"
+            <%if(!user.favorites.includes(posts[i]._id)){ %>
+              <form
+          class="row justify-content-center mt-3"
+          action="/post/favoritePost/<%= posts[i]._id %>?_method=PUT"
+          method="POST"
+        >
+              <button class="btn btn-outline-info fa fa-heart" type="submit"></button>
+            </form>
+               <%}%>
+               <%if(user.favorites.includes(posts[i]._id)){ %>
+                <form
+              class="row justify-content-center mt-3"
+              action="/post/deleteFavorite/<%= posts[i]._id %>?_method=PUT"
               method="POST"
             >
-              <button class="btn btn-primary fa fa-heart" type="submit"></button>
-            </form> -->
+              <button class="btn btn-info fa fa-heart" type="submit"></button>
+            </form>
+            <%}%>
           </li>
         
         <% } %>

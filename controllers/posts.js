@@ -24,7 +24,7 @@ module.exports = {
     try {
       const allPosts = await Post.find().sort({ cocktailName: 1 }).lean();
       const posts = allPosts.filter((e)=> e.public !== false)
-      res.render("feed.ejs", { posts: posts });
+      res.render("feed.ejs", { posts: posts, user: req.user });
       
     } catch (err) {
       console.log(err);
@@ -34,7 +34,7 @@ module.exports = {
     try {
       const allPosts = await Post.find().sort({ cocktailName: -1 }).lean();
       const posts = allPosts.filter((e)=> e.public !== false)
-      res.render("feed.ejs", { posts: posts });
+      res.render("feed.ejs", { posts: posts, user: req.user });
     } catch (err) {
       console.log(err);
     }

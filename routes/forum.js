@@ -5,10 +5,10 @@ const forumController = require("../controllers/forumTopics");
 const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 //Post Routes - simplified for now
-router.get("/:id", ensureAuth, forumController.getForumPost);
+router.get("/:id", forumController.getForumPost);
 
-router.post("/createForumPost", upload.single("file"), forumController.createForumPost);
+router.post("/createForumPost", ensureAuth, upload.single("file"), forumController.createForumPost);
 
-router.delete("/deleteForumPost/:id", forumController.deleteForumPost);
+router.delete("/deleteForumPost/:id", ensureAuth,forumController.deleteForumPost);
 
 module.exports = router;

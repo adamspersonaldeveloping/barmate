@@ -9,14 +9,15 @@
           </div>
           <div class="mt-5">
             <h2 class="text-white">Add a drink</h2>
+            <span class="text-danger">&#42 required</span>
             <form action="/post/createPost" enctype="multipart/form-data" method="POST">
               <div class="mb-3">
-                  <label for="cocktailName" class="form-label">Drink Name</label>
-                  <input style="background:rgba(255,255,255,0.7)" type="text" class="form-control" id="cocktailName" name="cocktailName">
+                  <label for="cocktailName" class="form-label">Drink Name&#42</label>
+                  <input style="background:rgba(255,255,255,0.7)" type="text" class="form-control" id="cocktailName" name="cocktailName" required>
               </div>
               <div class="mb-3 ingredientContainer">
-                <label for="ingredient1">Ingredients(ex. 45ml Gin)</label>
-                <input type="text" placeholder="First Ingedient" name="ingredient1" class="form-control transBack"> 
+                <label for="ingredient1">Ingredients(ex. 45ml Gin)&#42</label>
+                <input type="text" placeholder="First Ingedient" name="ingredient1" class="form-control transBack" required> 
                 <input type="text" placeholder="Second Ingedient" name="ingredient2" class="form-control transBack">
                 <input type="text" placeholder="Third Ingedient" name="ingredient3" class="form-control transBack">
                 <input type="text" placeholder="Fourth Ingedient"  name="ingredient4" class="form-control transBack">
@@ -28,8 +29,8 @@
                 <input type="text" placeholder="Tenth Ingedient" name="ingredient10" class="form-control transBack">
             </div>
             <div class="mb-3">
-              <label for="method" class="form-label">Preparation</label>
-              <input style="background:rgba(255,255,255,0.7)" type="text" class="form-control" id="method" name="method">
+              <label for="method" class="form-label">Preparation&#42</label>
+              <input style="background:rgba(255,255,255,0.7)" type="text" class="form-control" id="method" name="method" required>
             </div>
             <div class="mb-3">
               <label for="garnish" class="form-label">Garnish</label>
@@ -55,10 +56,10 @@
         <ul class="row list-unstyled">
         <% for(var i=0; i<posts.length; i++) {%>
           <li class="col-6 justify-content-between mt-5">
-            <a href="/post/<%= posts[i]._id%>">
+            <a class="text-decoration-none" href="/post/<%= posts[i]._id%>">
               <img class="img-fluid" src="<%= posts[i].image%>">
+              <span class="text-white"><%= posts[i].cocktailName %></span>
             </a>
-            <span class="text-white"><%= posts[i].cocktailName %></span>
           </li>
         <% } %>
         </ul>

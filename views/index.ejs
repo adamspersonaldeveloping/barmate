@@ -1,6 +1,6 @@
 <%- include('partials/header') -%>
 
-<div class="container col-xxl-8 px-4 py-5">
+  <div class="container col-xxl-8 px-4 py-5">
     <div class="row flex-lg-row-reverse align-items-center justify-content-center g-5 py-5">
       <div class="col-10 col-sm-8 col-lg-6">
         <img src="https://res.cloudinary.com/dllmha3wx/image/upload/v1663975642/two-old-fashioned_bmvefe.jpg" class="d-block mx-lg-auto img-fluid" alt="cocktails and more" width="700" height="500" loading="lazy">
@@ -13,9 +13,55 @@
           <a href="/login" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">Login</a>
         </div>
       </div>
+      <div class="blaze-slider my-slider">
+        <div class="blaze-container">
+          <div class="blaze-track-container">
+            <div class="blaze-track">
+              <% for(let i=0; i<posts.length; i++) {%>
+                <% let random = Math.floor(Math.random()* (posts.length - 1)); %>
+                
+                <%if(posts[random].public !== false){ %>
+                <div class="">
+                  <a class="text-decoration-none" href="/post/<%= posts[random]._id%>">
+                    <img class="ps-1 pe-1 img-fluid slider-img" src="<%= posts[random].image%>">
+                    <span class="ps-1 pe-1 text-light mt-4 text-center col-12"><%= posts[random].cocktailName %></span><br>
+                  </a>
+                </div>
+                <% } %>
+              <% } %> 
+            </div>
+          </div>
+        </div>
+        <div class="controls">
+          <button class="blaze-prev">prev</button>
+          <div class="blaze-pagination"></div>
+          <button class="blaze-next">next</button>
+        </div>
+      </div>
     </div>
   </div>
 
+<script src="https://unpkg.com/blaze-slider@1.8.0/dist/blaze-slider.min.js"></script>
+<script>
+  const slider = document.querySelector(".blaze-slider");
 
+  new BlazeSlider(slider, {
+    all: {
+      enableAutoplay: true,
+      slidesToScroll: 3,
+      slidesToShow: 3,
+      transitionDuration: 300
+    },
+    "(max-width: 900px)": {
+      slidesToShow: 2,
+      slidesToShow: 2,
+      slidesGap: "40px"
+    },
+    "(max-width: 500px)": {
+      slidesToShow: 1,
+      slidesToScroll: 1
+    }
+  });
+</script>
 
 <%- include('partials/footer') -%>

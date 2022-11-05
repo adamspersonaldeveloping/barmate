@@ -10,9 +10,13 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 router.get("/", homeController.getIndex);
 router.get("/profile", ensureAuth, postsController.getProfile);
 router.get("/favorites", ensureAuth, postsController.getFavorites);
-router.get("/feed", ensureAuth, postsController.getFeed);
-router.get("/feedZtoA", ensureAuth, postsController.getFeedZtoA);
-router.get("/forumFeed", ensureAuth, forumController.getForumFeed);
+
+router.get("/feed", postsController.getFeed);
+router.get("/feedZtoA", postsController.getFeedZtoA);
+router.get("/feedIBA", postsController.getFeedIBA);
+router.get("/feedNoIBA", postsController.getFeedNoIBA);
+
+router.get("/forumFeed", forumController.getForumFeed);
 
 router.get("/login", authController.getLogin);
 router.post("/login", authController.postLogin);

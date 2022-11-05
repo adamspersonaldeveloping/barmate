@@ -22,8 +22,28 @@ module.exports = {
   },
   getFeed: async (req, res) => {
     try {
-      const allPosts = await Post.find().sort({ cocktailName: 1 }).lean();
+      const allPosts = await Post.find().sort({ cocktailName: 1 }).lean();//.sort({ cocktailName: 1 })
       const posts = allPosts.filter((e)=> e.public !== false)
+      res.render("feed.ejs", { posts: posts, user: req.user });
+      console.log(posts.filter(e=>e.ibaCocktail == false).length)
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  getFeedIBA: async (req, res) => {
+    try {
+      const allPosts = await Post.find().sort({ cocktailName: 1 }).lean();
+      const posts = allPosts.filter((e)=> e.ibaCocktail !== false)
+      res.render("feed.ejs", { posts: posts, user: req.user });
+      
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  getFeedNoIBA: async (req, res) => {
+    try {
+      const allPosts = await Post.find().sort({ cocktailName: 1 }).lean();
+      const posts = allPosts.filter((e)=> e.ibaCocktail === false)
       res.render("feed.ejs", { posts: posts, user: req.user });
       
     } catch (err) {
@@ -53,10 +73,10 @@ module.exports = {
     try {
       let result;
       if(req.file) result = await cloudinary.uploader.upload(req.file.path);
-      else result = {secure_url: 'https://res.cloudinary.com/dllmha3wx/image/upload/v1664446616/logo-barmate-not-found_kdvamw.png', public_id: 'logo-barmate-not-found_kdvamw'}
+      else result = {secure_url: 'https://res.cloudinary.com/dllmha3wx/image/upload/v1667614935/logo-barmate-not-found_inxzqr.png', public_id: 'logo-barmate-not-found_inxzqr'}
     
       await Post.create({
-        cocktailName: req.body.cocktailName,
+        cocktailName: req.body.cocktailName.charAt(0).toUpperCase() + req.body.cocktailName.slice(1),
         ingredients: [
           req.body.ingredient1,
           req.body.ingredient2,

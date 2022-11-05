@@ -1,24 +1,23 @@
 <%- include('partials/header') -%>
   <div class="container">
     <div class="row justify-content-center mt-5">
-      
-       
-      <a href="<%= posts[posts.length-1].cocktailName.charCodeAt(0) > 100 ? '/feedZtoA' : '/feed'%>" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold"><%= posts[posts.length-1].cocktailName.charCodeAt(0) > 100 ? 'List Z - A' : 'List A - Z'%></a>
-      <a href="<%= [...posts].map(e=>e.ibaCocktail).includes(false) ? '/feedIBA' : '/feed'%>" class="btn col-6 btn-outline-info btn-lg px-4 me-sm-3 fw-bold"><%= [...posts].map(e=>e.ibaCocktail).includes(false) ? 'IBA Cocktails only' : 'All Cocktails'%></a>
-      <a href="<%= posts.filter(e=>e.ibaCocktail == false).length >= 1 ? '/feedNoIBA' : '/feed'%>" class="btn col-6 btn-outline-info btn-lg px-4 me-sm-3 fw-bold"><%= posts.filter(e=>e.ibaCocktail == false).length >=1 ? 'Remove IBA Cocktails' : 'All Cocktails'%></a>
-      
+      <div class="d-flex row ">     
+        <a href="<%= posts[posts.length-1].cocktailName.charCodeAt(0) > 100 ? '/feedZtoA' : '/feed'%>" class="btn col-md btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-3"><%= posts[posts.length-1].cocktailName.charCodeAt(0) > 100 ? 'List Z - A' : 'List A - Z'%></a>
+        <a href="<%= [...posts].map(e=>e.ibaCocktail).includes(false) ? '/feedIBA' : '/feed'%>" class="btn col-md  btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-3"><%= [...posts].map(e=>e.ibaCocktail).includes(false) ? 'IBA Cocktails only' : 'All Cocktails'%></a>
+        <a href="<%= posts.filter(e=>e.ibaCocktail == false).length >= 1 ? '/feedNoIBA' : '/feed'%>" class="btn col-md  btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-3"><%= posts.filter(e=>e.ibaCocktail == false).length >=1 ? 'Remove IBA Cocktails' : 'All Cocktails'%></a>
+      </div>
      
-      <ul class="row list-unstyled">
+      <ul class="row list-unstyled d-flex flex-wrap">
         <% for(var i=0; i<posts.length; i++) {%>
           
-          <li class="col-6 justify-content-between mt-5">
-            <a class="text-decoration-none" href="/post/<%= posts[i]._id%>">
-              <h1 class="text-white justify-content-center"><%= posts[i].cocktailName %></h1>
+          <li class="col-sm-6 col-lg-3 justify-content-center mt-5 ">
+            <a class="text-decoration-none row justify-content-center" href="/post/<%= posts[i]._id%>">
+              <h3 class="col text-center text-white justify-content-center"><%= posts[i].cocktailName %></h3>
               <img class="img-fluid" src="<%= posts[i].image%>">
             </a>
             <%if(user == undefined){ %>
 
-            <a href="/login"><button class="btn btn-info fa fa-heart" >Sign in to favorite this recipe</button></a>
+            <a href="/login"><button class="btn btn-info fa fa-heart col-6" >Sign in to favorite this recipe</button></a>
           
           <%}else if(!user.favorites.includes(posts[i]._id)){ %>
               <form
@@ -26,7 +25,7 @@
           action="/post/favoritePost/<%= posts[i]._id %>?_method=PUT"
           method="POST"
         >
-              <button class="btn btn-outline-info fa fa-heart" type="submit"></button>
+              <button class="btn btn-outline-info fa fa-heart col-6" type="submit"></button>
             </form>
                <%}else{ %>
                 <form
@@ -34,7 +33,7 @@
               action="/post/deleteFavorite/<%= posts[i]._id %>?_method=PUT"
               method="POST"
             >
-              <button class="btn btn-info fa fa-heart" type="submit"></button>
+              <button class="btn btn-info fa fa-heart col-6" type="submit"></button>
             </form>
             <%}%>
             

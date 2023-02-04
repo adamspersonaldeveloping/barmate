@@ -57,17 +57,20 @@
       <li class="col-10 justify-content-between mt-2 text-secondary border">
         <h6 class="text-white mt-1">Comment from: <span class="text-secondary"><%=comments[i].userName%></span></h6>
         <p class="text-secondary"><%=comments[i].comment%></p>
-            <%if(comments[i].user == user.id){ %>
-                <form
+            <%if(user == undefined){ %>
+                <div></div>
+            <%}else if(comments[i].user == user.id) {%>
+            <form
                   action="/comment/deleteComment/<%=comments[i]._id%>&<%=forumPost.id%>?_method=DELETE"
                   method="POST"
                   class="col-3"
                 
                 >
-                <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2 fa fa-trash" type="submit">Delete</button>
-            </form>
-          </li>
-        <%}%>
+                  <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2 fa fa-trash" type="submit">Delete</button>
+             </form>
+             <% } %>
+      </li>
+       
       
    
     <% } %>

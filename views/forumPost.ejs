@@ -8,26 +8,48 @@
     </div>
     <div class="row justify-content-center">  
 
-        <%if(forumPost.user == user.id){ %>
-               <form
-               class="row justify-content-center mt-3"
-                 action="/forum/deleteForumPost/<%= forumPost.id %>?_method=DELETE"
-                 method="POST" 
-               >
-                 <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2" type="submit">Delete Post</button>
-               </form>
+      <%if(user == undefined){ %>
+
+        <div class="mt-1 border">
+          <h2 class="text-white">Sign in to comment</h2>
+          
+        </div>
+      
+      <%}else if(forumPost.user == user.id){  console.log(forumPost.user == user.id) %>
+          <div>
+            <div class="mt-1 border">
+              <h2 class="text-white">Add a comment</h2>
+              <form action="/comment/createComment/<%=forumPost._id%>" method="POST">
+                  <div class="mb-3">
+                      <label for="comment" class="form-label text-secondary">Comment</label>
+                      <input type="text" class="form-control" id="comment" name="comment">
+                  </div>
+              <button type="submit" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2">Submit</button>
+              </form>
+            </div>
+          </div>
+          <form
+            class="row justify-content-center mt-3"
+              action="/forum/deleteForumPost/<%= forumPost.id %>?_method=DELETE"
+              method="POST" 
+            >
+              <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2" type="submit">Delete Post</button>
+            </form>
+          
+           <%}else if(forumPost.user !== user.id){ %>
+            <div class="mt-1 border">
+              <h2 class="text-white">Add a comment</h2>
+              <form action="/comment/createComment/<%=forumPost._id%>" method="POST">
+                  <div class="mb-3">
+                      <label for="comment" class="form-label text-secondary">Comment</label>
+                      <input type="text" class="form-control" id="comment" name="comment">
+                  </div>
+              <button type="submit" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2">Submit</button>
+              </form>
+            </div>
         <%}%>
     </div>
-    <div class="mt-1 border">
-        <h2 class="text-white">Add a comment</h2>
-        <form action="/comment/createComment/<%=forumPost._id%>" method="POST">
-            <div class="mb-3">
-                <label for="comment" class="form-label text-secondary">Comment</label>
-                <input type="text" class="form-control" id="comment" name="comment">
-            </div>
-        <button type="submit" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2">Submit</button>
-        </form>
-    </div>
+    
   </div>
 
   <ul class="row list-unstyled">

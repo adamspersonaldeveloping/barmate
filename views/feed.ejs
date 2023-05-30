@@ -5,7 +5,10 @@
         <a href="<%= posts[posts.length-1].cocktailName.charCodeAt(0) > 100 ? '/feedZtoA' : '/feed'%>" class="btn col-md btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-3"><%= posts[posts.length-1].cocktailName.charCodeAt(0) > 100 ? 'List Z - A' : 'List A - Z'%></a>
         <a href="<%= [...posts].map(e=>e.ibaCocktail).includes(false) ? '/feedIBA' : '/feed'%>" class="btn col-md  btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-3"><%= [...posts].map(e=>e.ibaCocktail).includes(false) ? 'IBA Cocktails only' : 'All Cocktails'%></a>
         <a href="<%= posts.filter(e=>e.ibaCocktail == false).length >= 1 ? '/feedNoIBA' : '/feed'%>" class="btn col-md  btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-3"><%= posts.filter(e=>e.ibaCocktail == false).length >=1 ? 'Remove IBA Cocktails' : 'All Cocktails'%></a>
+        <a href="/getFeedUnforgettables" class="btn col-md  btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-3">The Unforgettables</a>
+        <a href="/getFeedNewEraDrinks" class="btn col-md  btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-3">New Era Drinks</a>
       </div>
+      <div class="text-secondary"><%= posts.length %> cocktails</div>
      
       <ul class="row list-unstyled d-flex flex-wrap">
         <% for(var i=0; i<posts.length; i++) {%>

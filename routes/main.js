@@ -15,6 +15,9 @@ router.get("/feed", postsController.getFeed);
 router.get("/feedZtoA", postsController.getFeedZtoA);
 router.get("/feedIBA", postsController.getFeedIBA);
 router.get("/feedNoIBA", postsController.getFeedNoIBA);
+router.get("/getFeedUnforgettables", postsController.getFeedUnforgettables);
+router.get("/getFeedNewEraDrinks", postsController.getFeedNewEraDrinks);
+
 
 router.get("/forumFeed", forumController.getForumFeed);
 

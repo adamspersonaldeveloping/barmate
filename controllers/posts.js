@@ -59,6 +59,26 @@ module.exports = {
       console.log(err);
     }
   },
+  getFeedUnforgettables: async (req, res) => {
+    try {
+      const allPosts = await Post.find().sort({ cocktailName: 1 }).lean();
+      const posts = allPosts.filter((e)=> e.importance === "The Unforgettables")
+      res.render("feed.ejs", { posts: posts, user: req.user });
+      
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  getFeedNewEraDrinks: async (req, res) => {
+    try {
+      const allPosts = await Post.find().sort({ cocktailName: 1 }).lean();
+      const posts = allPosts.filter((e)=> e.importance === "New Era Drinks")
+      res.render("feed.ejs", { posts: posts, user: req.user });
+      
+    } catch (err) {
+      console.log(err);
+    }
+  },
   getPost: async (req, res) => {
     try {
       const post = await Post.findById(req.params.id);

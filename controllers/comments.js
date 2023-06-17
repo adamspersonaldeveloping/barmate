@@ -11,8 +11,6 @@ module.exports = {
         user: req.user.id,
         userName: req.user.userName,
       });
-      console.log(req.user)
-      console.log(req.user.userID)
       console.log("Comment has been added!");
       res.redirect("/forum/"+req.params.id);
     } catch (err) {
@@ -21,10 +19,10 @@ module.exports = {
   },
   deleteComment: async (req, res) => {
     try {
-      // Find post by id
+      // Find comment by id
       let comment = await Comment.findById({ _id: req.params.id });
     console.log(req)
-      // Delete post from db
+      // Delete comment from db
       await comment.remove({ _id: req.params.id });
       console.log("Deleted Comment");
       res.redirect("/forum/"+req.params.postId);

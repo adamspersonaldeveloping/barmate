@@ -96,7 +96,7 @@ module.exports = {
       else result = {secure_url: 'https://res.cloudinary.com/dllmha3wx/image/upload/v1667614935/logo-barmate-not-found_inxzqr.png', public_id: 'logo-barmate-not-found_inxzqr'}
     
       await Post.create({
-        cocktailName: req.body.cocktailName.charAt(0).toUpperCase() + req.body.cocktailName.slice(1),
+        cocktailName: req.body.cocktailName.charAt(0).toUpperCase() + req.body.cocktailName.slice(1).toLowerCase(),
         ingredients: [
           req.body.ingredient1,
           req.body.ingredient2,
@@ -118,7 +118,6 @@ module.exports = {
         public: req.body.public || 'true',
         user: req.user.id,
       });
-      console.log(req.file)
       console.log("Post has been added!");
       res.redirect("/profile");
     } catch (err) {
@@ -126,7 +125,6 @@ module.exports = {
     }
   },
   favoritePost: async (req, res) => {
-    // change this to save the post id to an array under the User
     try {
       await User.findOneAndUpdate(
         { _id: req.user.id },
@@ -142,7 +140,6 @@ module.exports = {
     }
   },
   deleteFavorite: async (req, res) => {
-    // change this to delete the post id to an array under the User
     try {
       await User.findOneAndUpdate(
         { _id: req.user.id },
@@ -158,7 +155,6 @@ module.exports = {
     }
   },
   makePrivate: async (req, res) => {
-    // change this to save the post id to an array under the User
     try {
       await Post.findOneAndUpdate(
         { _id: req.params.id },
@@ -166,7 +162,6 @@ module.exports = {
           $set: {public: false },
         }
       );
-      
       console.log("made post private");
       res.redirect(`/post/${req.params.id}`);
     } catch (err) {
@@ -174,7 +169,6 @@ module.exports = {
     }
   },
   makePublic: async (req, res) => {
-    // change this to save the post id to an array under the User
     try {
       await Post.findOneAndUpdate(
         { _id: req.params.id },
@@ -182,7 +176,6 @@ module.exports = {
           $set: {public: true },
         }
       );
-      
       console.log("made post public");
       res.redirect(`/post/${req.params.id}`);
     } catch (err) {

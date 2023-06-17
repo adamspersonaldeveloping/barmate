@@ -47,11 +47,6 @@ module.exports = {
  
   deleteForumPost: async (req, res) => {
     try {
-      // Find post by id
-      //let forumPost = await Forum.findById({ _id: req.params.id });
-      // Delete image from cloudinary
-     // await cloudinary.uploader.destroy(forumPost.cloudinaryId);
-      // Delete post from db
       await Forum.remove({ _id: req.params.id });
       console.log("Deleted Forum Post");
       res.redirect("/forumFeed");

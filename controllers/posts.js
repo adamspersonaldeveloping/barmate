@@ -1,6 +1,7 @@
 const cloudinary = require("../middleware/cloudinary");
 const Post = require("../models/Post");
 const User = require("../models/User")
+const nodemailer = require('nodemailer')
 
 module.exports = {
   getProfile: async (req, res) => {
@@ -93,7 +94,7 @@ module.exports = {
     try {
       let result;
       if(req.file) result = await cloudinary.uploader.upload(req.file.path);
-      else result = {secure_url: 'https://res.cloudinary.com/dllmha3wx/image/upload/v1667614935/logo-barmate-not-found_inxzqr.png', public_id: 'logo-barmate-not-found_inxzqr'}
+      else result = {secure_url: 'https://res.cloudinary.com/dllmha3wx/image/upload/v1672920145/qsm9ar4qxy53hxy9yhii.png', public_id: 'qsm9ar4qxy53hxy9yhii'}
     
       await Post.create({
         cocktailName: req.body.cocktailName.charAt(0).toUpperCase() + req.body.cocktailName.slice(1).toLowerCase(),
@@ -107,7 +108,7 @@ module.exports = {
           req.body.ingredient7,
           req.body.ingredient8,
           req.body.ingredient9,
-           req.body.ingredient10,
+          req.body.ingredient10,
         ],
         method: req.body.method,
         garnish: req.body.garnish || "N/A",
@@ -120,6 +121,30 @@ module.exports = {
       });
       console.log("Post has been added!");
       res.redirect("/profile");
+      // send email to admin when comment to forum post has been made
+      const output = `
+        <p> A new drink was added to barmate called: ${req.body.cocktailName}</p>
+        <p> from: ${req.user.userName}</p>
+      `
+      // create reusable transporter object using the default SMTP transport
+      let transporter = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+            user: "steinbeals@gmail.com",
+            pass:  process.env.GMAIL_SECRET
+        },
+        tls:{
+          rejectUnauthorized: false
+        }
+      });
+      // send mail with defined transport object
+      let info = await transporter.sendMail({
+        from: 'barMate <steinbeals@gmail.com>', 
+        to: "adamspersonaldeveloping@gmail.com",
+        subject: "New forum comment on Barmate", 
+        text: "Hello World", 
+        html: output, 
+      });
     } catch (err) {
       console.log(err);
     }
@@ -187,7 +212,9 @@ module.exports = {
       // Find post by id
       let post = await Post.findById({ _id: req.params.id });
       // Delete image from cloudinary
-      await cloudinary.uploader.destroy(post.cloudinaryId);
+      if(post.cloudinaryId !== 'qsm9ar4qxy53hxy9yhii'){
+        await cloudinary.uploader.destroy(post.cloudinaryId);
+      }
       // Delete post from db
       await Post.remove({ _id: req.params.id });
       console.log("Deleted Post");

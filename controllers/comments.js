@@ -1,5 +1,6 @@
 
 const Comment = require("../models/Comment");
+const nodemailer = require('nodemailer')
 
 module.exports = {
  
@@ -13,6 +14,31 @@ module.exports = {
       });
       console.log("Comment has been added!");
       res.redirect("/forum/"+req.params.id);
+      // send email to admin when comment to forum post has been made
+      const output = `
+      <p> You have a new comment on the forum post with ID: ${req.params.id}</p>
+      <p> with the comment: ${req.body.comment}</p>
+      <p> from: ${req.user.userName}</p>
+    `
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+          user: "steinbeals@gmail.com",
+          pass:  process.env.GMAIL_SECRET
+      },
+      tls:{
+        rejectUnauthorized: false
+      }
+    });
+   // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: 'barMate <steinbeals@gmail.com>', 
+      to: "adamspersonaldeveloping@gmail.com",
+      subject: "New forum comment on Barmate", 
+      text: "Hello World", 
+      html: output, 
+    });
     } catch (err) {
       console.log(err);
     }

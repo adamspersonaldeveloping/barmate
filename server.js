@@ -12,6 +12,13 @@ const mainRoutes = require("./routes/main");
 const postRoutes = require("./routes/posts");
 const forumRoutes = require("./routes/forum");
 const commentRoutes = require("./routes/comments");
+const bodyParser = require('body-parser')
+const nodemailer = require("nodemailer")
+const path = require('path')
+
+//bodyparser middleware
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 //Use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });

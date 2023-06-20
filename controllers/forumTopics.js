@@ -2,6 +2,7 @@ const cloudinary = require("../middleware/cloudinary");
 const Forum = require("../models/Forum");
 const Post = require("../models/Post")
 const Comment = require("../models/Comment");
+const nodemailer = require("nodemailer")
 
 
 module.exports = {
@@ -36,9 +37,33 @@ module.exports = {
         userName: req.user.userName,
         user: req.user.id,
       });
-      console.log(req.file)
-      console.log("Forum post has been added!");
       res.redirect("/forumFeed");
+      //sending an email to admin to notify when forum post is made
+      const output = `
+        <p> You have a new forum most titled: ${req.body.title}</p>
+        <p> with the message: ${req.body.message}</p>
+        <p> from: ${req.user.userName}</p>
+      `
+      // create reusable transporter object using the default SMTP transport
+      let transporter = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+            user: "steinbeals@gmail.com",
+            pass:  process.env.GMAIL_SECRET
+        },
+        tls:{
+          rejectUnauthorized: false
+        }
+      });
+     // send mail with defined transport object
+      let info = await transporter.sendMail({
+        from: 'barMate <steinbeals@gmail.com>', 
+        to: "adamspersonaldeveloping@gmail.com",
+        subject: "New forum post on Barmate", 
+        text: "Hello World", 
+        html: output, 
+      });
+      console.log("Forum post has been added!");
     } catch (err) {
       console.log(err);
     }

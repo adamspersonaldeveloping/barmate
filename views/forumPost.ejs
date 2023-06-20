@@ -17,23 +17,23 @@
       
       <%}else if(forumPost.user == user.id){ %>
           <div>
-            <div class="mt-1 border">
-              <h2 class="text-white">Add a comment</h2>
+            <div class="mt-1 border col">
+              <h2 class="text-white mx-3 ">Add a comment</h2>
               <form action="/comment/createComment/<%=forumPost._id%>" method="POST">
-                  <div class="mb-3">
+                  <div class="mb-3 mx-3">
                       <label for="comment" class="form-label text-secondary">Comment</label>
                       <input type="text" class="form-control" id="comment" name="comment">
                   </div>
-              <button type="submit" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2">Submit</button>
+              <button type="submit" class="mb-3 mx-3 btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">Submit</button>
               </form>
             </div>
           </div>
           <form
-            class="row justify-content-center mt-3"
+            class="row  mt-3"
               action="/forum/deleteForumPost/<%= forumPost.id %>?_method=DELETE"
               method="POST" 
             >
-              <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2" type="submit">Delete Post</button>
+              <button class="btn btn-danger btn-lg" type="submit">Delete Post</button>
             </form>
           
            <%}else if(forumPost.user !== user.id){ %>

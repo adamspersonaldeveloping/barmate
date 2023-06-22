@@ -1,0 +1,25 @@
+<%- include('partials/header') -%>
+
+
+
+<main class="container">
+
+  <div class="row justify-content-center">
+    <section class="col-6 mt-5">
+        <h1>Reset Password</h1>
+        <div>Enter your email below and click submit to receive a password reset link to the email on file.</div>
+        <% if (locals.messages.errors) { %>
+            <% messages.errors.forEach( el=> { %>
+                <div class="alert alert-danger"><%= el.msg %></div>
+            <% }) %>
+        <% } %>
+        <form class="formstyle" action="/recover" method="POST">
+            <input type="email" name="email" placeholder="Email">
+            <input id="submitbutton" type="submit">
+        </form>
+        <a class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold" href="/login">Return to login</a>
+    </section>
+  </div>
+</main>
+
+<%- include('partials/footer') -%>

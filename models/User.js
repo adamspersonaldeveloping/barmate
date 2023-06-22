@@ -6,8 +6,11 @@ const UserSchema = new mongoose.Schema({
   userName: { type: String, unique: true },
   email: { type: String, unique: true },
   favorites: [{ type : mongoose.Schema.Types.ObjectId, ref: 'Post' }],
-  //potentially have something here to (array?) to have posts that are liked by individual user
   password: String,
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
+},{
+    timestamps: true,
 });
 
 

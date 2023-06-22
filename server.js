@@ -15,6 +15,8 @@ const commentRoutes = require("./routes/comments");
 const bodyParser = require('body-parser')
 const nodemailer = require("nodemailer")
 const path = require('path')
+const passportLocalMongoose = require("passport-local-mongoose")
+const async = require("async")
 
 //bodyparser middleware
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -58,6 +60,16 @@ app.use(
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+  User.findById(id, function (err, user) {
+    done(err, user);
+  });
+});
 
 //Use flash messages for errors, info, ect...
 app.use(flash());

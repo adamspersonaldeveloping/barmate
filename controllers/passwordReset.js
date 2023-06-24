@@ -9,8 +9,10 @@ const async = require("async")
 
 exports.getPasswordRecover = (req, res) => {
     if (req.user) {
+        console.log(req.user)
         return res.redirect('/recover')
     }
+    console.log(req.user)
     res.render('recover', {
         title: 'Recover Password Request'
     })
@@ -53,9 +55,9 @@ exports.postPasswordRecover = async (req, res) =>{
         },
         function (token, user, done) {
             const transporter = nodemailer.createTransport({
-                service: "gmail",
+                service: "Gmail",
                 auth: {
-                    user: 'steinbeals@gmail.com',
+                    user: process.env.USER,
                     pass: process.env.GMAIL_SECRET
                 }
             })
@@ -68,6 +70,7 @@ exports.postPasswordRecover = async (req, res) =>{
                     'http://' + req.headers.host + '/reset/' + token + '\n\n' +
                     'If you did not request this, please ignore this email and your password will remain unchanged.\n'
             };
+            // console.log(mailOptions)
             transporter.sendMail(mailOptions, function (err) {
                 req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
                 done(err, 'done');
@@ -80,9 +83,12 @@ exports.postPasswordRecover = async (req, res) =>{
 }
 
 exports.getPasswordReset = (req, res) => {
-    if (req.user) {
-        return res.redirect('/reset/:token')
-    }
+    // console.log('pineapple')
+    // if (req.user) {
+    //     console.log(req.user, 'line87')
+    //     return res.redirect('/reset/:token')
+    // }
+    console.log(req.user)
     res.render('password-reset', {
         title: 'Password Reset'
     })

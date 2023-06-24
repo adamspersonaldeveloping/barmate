@@ -33,7 +33,7 @@
           action="/post/deletePost/<%= post.id %>?_method=DELETE"
           method="POST" 
         >
-          <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2" type="submit">Delete drink</button>
+          <button class="btn btn-outline-danger btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2" type="submit">Delete drink</button>
         </form>
           <% if(post.public == true){ %>
             <form
@@ -41,7 +41,7 @@
               action="/post/makePrivate/<%= post.id %>?_method=PUT"
               method="POST" 
             >
-            <button class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2" type="submit">Mark Drink Hidden</button>
+            <button class="btn btn-outline-warning btn-lg px-4 me-sm-3 fw-bold mt-2 mb-2" type="submit">Mark Drink Hidden</button>
             </form>
           <% } else{ %>  
             <form

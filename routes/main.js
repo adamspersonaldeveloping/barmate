@@ -31,5 +31,6 @@ router.get('/recover', passwordResetController.getPasswordRecover)
 router.post('/recover', passwordResetController.postPasswordRecover)
 router.get('/reset/:token', passwordResetController.getPasswordReset)
 router.post('/reset/:token', passwordResetController.postPasswordReset)
+router.get('/emailsent', passwordResetController.getPasswordSent)
 
 module.exports = router;

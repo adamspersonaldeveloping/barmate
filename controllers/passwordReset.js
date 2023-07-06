@@ -63,14 +63,13 @@ exports.postPasswordRecover = async (req, res) =>{
             })
             const mailOptions = {
                 to: user.email,
-                from: process.env.USER,
+                from: 'DoNotReply@Barmate.com',
                 subject: 'BarMate Password Reset Request',
                 text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
                     'http://' + req.headers.host + '/reset/' + token + '\n\n' +
                     'If you did not request this, please ignore this email and your password will remain unchanged.\n'
             };
-            // console.log(mailOptions)
             transporter.sendMail(mailOptions, function (err) {
                 req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
                 done(err, 'done');
@@ -78,12 +77,11 @@ exports.postPasswordRecover = async (req, res) =>{
         }
     ], function (err) {
         if (err) return console.log(err);
-        res.redirect('/login');
+        res.redirect('/emailsent');
     })
 }
 
 exports.getPasswordReset = (req, res) => {
-    // console.log('pineapple')
     // if (req.user) {
     //     console.log(req.user, 'line87')
     //     return res.redirect('/reset/:token')
@@ -127,3 +125,7 @@ exports.postPasswordReset = async(req,res) =>{
         res.redirect('/feed');
     })
 }
+
+exports.getPasswordSent = (req, res) => {
+      res.render("passwordResetEmailSent.ejs");
+    }

@@ -6,18 +6,23 @@
 
   <div class="row justify-content-center">
     <section class="col-6 mt-5">
-        <h1>Reset Password</h1>
+        <h1 class="text-white">Reset Password</h1>
         <div>Enter your email below and click submit to receive a password reset link to the email on file.</div>
         <% if (locals.messages.errors) { %>
             <% messages.errors.forEach( el=> { %>
                 <div class="alert alert-danger"><%= el.msg %></div>
             <% }) %>
         <% } %>
-        <form class="formstyle" action="/recover" method="POST">
-            <input type="email" name="email" placeholder="Email">
-            <input id="submitbutton" type="submit">
-        </form>
-        <a class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold" href="/login">Return to login</a>
+        <p class="text-white">To reset your password enter your email and submit. A link will be sent to your email and you can follow the instruction included to reset your password.</p>
+        <div class="form-group">
+          <form class="formstyle" action="/recover" method="POST">
+            <label class="text-white" for="recoverPasswordEmail">Email address</label>
+            <input class="form-control my-2" type="email" name="email" id="recoverPasswordEmail" placeholder="Enter email">
+            <button type="submit" class="btn btn-outline-info">Submit</button>  
+          </form>
+          
+        </div>
+        <a class="btn btn-outline-info my-2" href="/login">Return to login</a>
     </section>
   </div>
 </main>

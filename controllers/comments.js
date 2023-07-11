@@ -12,6 +12,7 @@ module.exports = {
         user: req.user.id,
         userName: req.user.userName,
       });
+      console.log(req)
       console.log("Comment has been added!");
       res.redirect("/forum/"+req.params.id);
       // send email to admin when comment to forum post has been made

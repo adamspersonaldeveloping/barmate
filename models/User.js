@@ -2,17 +2,19 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const { array } = require("../middleware/multer");
 
-const UserSchema = new mongoose.Schema({
-  userName: { type: String, unique: true },
-  email: { type: String, unique: true },
-  favorites: [{ type : mongoose.Schema.Types.ObjectId, ref: 'Post' }],
-  password: String,
-  resetPasswordToken: String,
-  resetPasswordExpires: Date,
-},{
+const UserSchema = new mongoose.Schema(
+  {
+    userName: { type: String, unique: true },
+    email: { type: String, unique: true },
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
+    password: String,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
+  },
+  {
     timestamps: true,
-});
-
+  }
+);
 
 // Password hash middleware.
 

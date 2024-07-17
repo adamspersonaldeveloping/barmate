@@ -676,25 +676,82 @@ exports.getPasswordReset = (req, res) => {
 };
 
 exports.isPasswordValid = (req) => {
+  const pass = req.body.password;
+  if (
+    validator.isStrongPassword(pass, {
+      minLength: 8,
+      minUppercase: 1,
+      minNumbers: 1,
+      maxLength: 32,
+    }) &&
+    pass !== req.body.confirmPassword
+  ) {
+    return true;
+  }
+
   const validationErrors = [];
-  if (!validator.isLength(req.body.password, { min: 8 }))
+  const passMap = {
+    len: pass.length,
+    upperCount: 0,
+    lowerCount: 0,
+    numCount: 0,
+  };
+  const upperCaseRegex = /^[A-Z]$/;
+  const lowerCaseRegex = /^[a-z]$/;
+  const numberRegex = /^[0-9]$/;
+  for (const char of pass) {
+    if (upperCaseRegex.test(char)) {
+      passMap.upperCount++;
+    } else if (lowerCaseRegex.test(char)) {
+      passMap.lowerCount++;
+    } else if (numberRegex.test(char)) {
+      passMap.numCount++;
+    }
+  }
+  if (passMap.len < 8) {
     validationErrors.push({
       msg: "Password must be at least 8 characters long",
     });
-  if (req.body.password !== req.body.confirmPassword)
-    validationErrors.push({ msg: "Passwords do not match" });
+  }
+  if (passMap.len > 32) {
+    validationErrors.push({
+      msg: "Password must NOT be more than 32 characters long",
+    });
+  }
+  if (passMap.upperCount === 0) {
+    validationErrors.push({
+      msg: "PASSWORD MUST HAVE AT LEAST 1 UPPERCASE LETTER",
+    });
+  }
+  if (passMap.lowerCount === 0) {
+    validationErrors.push({
+      msg: "password must have at least 1 lowercase letter",
+    });
+  }
+  if (passMap.numCount === 0) {
+    validationErrors.push({
+      msg: "Pa55w0rd mu57 4av3 a7 l3ast 1 numb3r",
+    });
+  }
+  if (pass !== req.body.confirmPassword) {
+    validationErrors.push({
+      msg: "Passwords do not match",
+    });
+  }
 
-  // if (validationErrors.length) {
-  //   req.flash("info", validationErrors);
+  // if(validationErrors.length > 3){
+  //   console.log('Have you ever tried to make a password before?')
   // }
-  return validationErrors.length ? validationErrors[0].msg : true;
+
+  return validationErrors.length ? validationErrors : true;
 };
 
 exports.postPasswordReset = async (req, res) => {
   const validPass = isPasswordValid(req);
   if (!validPass === true) {
-    req.flash("info", [{ msg: validPass }]);
+    req.flash("info", validPass);
   }
+  //previous simple validation 1.0
   // const validationErrors = []
   // if (!validator.isLength(req.body.password, { min: 8 })) validationErrors.push({ msg: 'Password must be at least 8 characters long' })
   // if (req.body.password !== req.body.confirmPassword) validationErrors.push({ msg: 'Passwords do not match' })

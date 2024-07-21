@@ -6,6 +6,7 @@ const passportLocalMongoose = require("passport-local-mongoose");
 const nodemailer = require("nodemailer");
 const async = require("async");
 const flash = require("express-flash");
+const { syncBuiltinESMExports } = require("module");
 
 exports.getPasswordRecover = (req, res) => {
   if (req.user) {
@@ -35,26 +36,54 @@ exports.postPasswordRecover = async (req, res) => {
           done(err, token);
         });
       },
-      function (token, done) {
-        User.findOne({ email: req.body.email }, function (err, user) {
+      // refactored to use async await instead of a callback for .findOne() because mongoose no longer supports callbacks in this method
+      async function (token, done) {
+        try {
+          const user = await User.findOne({ email: req.body.email });
           const errors = [];
           if (!user) {
             errors.push({ msg: "No account with that email address exists." });
           }
           if (errors.length) {
             req.flash("errors", errors);
-            return res.redirect("/recover");
+            return res.redirect("/recovery");
           }
 
           user.resetPasswordToken = token;
-          user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+          user.resetPasswordExpires = Date.now() + 3600000; //1hour
 
-          user.save(function (err) {
-            done(err, token, user);
-          });
-        });
+          // user.save(function (err) {
+          //   done(err, token, user);
+          // });
+          await user.save();
+          // done(null, token, user);
+        } catch (err) {
+          done(err);
+        }
       },
-      function (token, user, done) {
+
+      // function (token, done) {
+      //   User.findOne({ email: req.body.email }, function (err, user) {
+      //     const errors = [];
+      //     if (!user) {
+      //       errors.push({ msg: "No account with that email address exists." });
+      //     }
+      //     if (errors.length) {
+      //       req.flash("errors", errors);
+      //       return res.redirect("/recover");
+      //     }
+
+      //     user.resetPasswordToken = token;
+      //     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+      //     user.save(function (err) {
+      //       done(err, token, user);
+      //     });
+      //   });
+      // },
+      async function (token, user, done) {
+        user = await User.findOne({ email: req.body.email });
+
         const transporter = nodemailer.createTransport({
           service: "Gmail",
           auth: {
@@ -63,7 +92,7 @@ exports.postPasswordRecover = async (req, res) => {
           },
         });
         const mailOptions = {
-          to: user.email,
+          to: req.body.email,
           from: "DoNotReply@Barmate.com",
           subject: "BarMate Password Reset Request",
           context: {
@@ -591,7 +620,7 @@ exports.postPasswordRecover = async (req, res) => {
                               <tr>
                                 <td class="content-cell">
                                   <div class="f-fallback">
-                                    <h1>Hi ${name},</h1>
+                                    <h1>Hi ${user.userName},</h1>
                                     <p>You recently requested to reset your password for your BarMate account. Use the button below to reset it. <strong>This password reset is only valid for the next 1 hour (60 minutes).</strong></p>
                                     <!-- Action -->
                                     <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation">
@@ -602,7 +631,7 @@ exports.postPasswordRecover = async (req, res) => {
                                           <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
                                             <tr>
                                               <td align="center">
-                                                <a href="http://${host}/reset/${token}" class="f-fallback btn button btn-outline-info" target="_blank">Reset your password</a>
+                                                <a href="http://${req.headers.host}/reset/${token}" class="f-fallback btn button btn-outline-info" target="_blank">Reset your password</a>
                                               </td>
                                             </tr>
                                           </table>
@@ -617,7 +646,7 @@ exports.postPasswordRecover = async (req, res) => {
                                       <tr>
                                         <td>
                                           <p class="f-fallback sub">If you’re having trouble with the button above, copy and paste the URL below into your web browser.</p>
-                                          <p class="f-fallback sub">${action_url}</p>
+                                          <p class="f-fallback sub">http://${req.headers.host}/reset/${token}</p>
                                         </td>
                                       </tr>
                                     </table>
@@ -646,15 +675,24 @@ exports.postPasswordRecover = async (req, res) => {
                 </table>
               </body>`,
         };
-        transporter.sendMail(mailOptions, function (err) {
-          req.flash(
-            "info",
-            "An e-mail has been sent to " +
-              user.email +
-              " with further instructions."
-          );
-          done(err, "done");
+
+        await transporter.sendMail(mailOptions);
+        req.flash("info", {
+          msg:
+            "an e-mail has been sent to " +
+            user.email +
+            " with further instructions.",
         });
+
+        // transporter.sendMail(mailOptions, function (err) {
+        //   req.flash(
+        //     "info",
+        //     "An e-mail has been sent to " +
+        //       user.email +
+        //       " with further instructions."
+        //   );
+        //   done(err, "done");
+        // });
       },
     ],
     function (err) {
@@ -762,33 +800,60 @@ exports.postPasswordReset = async (req, res) => {
   // }
   async.waterfall(
     [
-      function (done) {
-        User.findOne(
-          {
+      //refractored using async await
+      async function (done) {
+        try {
+          const user = await User.findOne({
             resetPasswordToken: req.params.token,
             resetPasswordExpires: { $gt: Date.now() },
-          },
-          function (err, user) {
-            if (!user) {
-              req.flash(
-                "info",
-                "Password reset token is invalid or has expired."
-              );
-              return res.redirect("back");
-            }
+          });
 
-            user.password = req.body.password;
-            user.resetPasswordToken = undefined;
-            user.resetPasswordExpires = undefined;
-
-            user.save(function (err) {
-              req.logIn(user, function (err) {
-                done(err, user);
-              });
-            });
+          if (!user) {
+            req.flash("info", "Password rest token is invalid or has expired.");
+            return res.redirect("back");
           }
-        );
+          user.password = req.body.password;
+          user.resetPasswordToken = undefined;
+          user.resetPasswordExpires = undefined;
+
+          await user.save();
+
+          req.logIn(user, function (err) {
+            done(err, user);
+          });
+        } catch (err) {
+          console.log(err);
+        }
       },
+
+      // function (done) {
+      //   //need to refractor
+      //   User.findOne(
+      //     {
+      //       resetPasswordToken: req.params.token,
+      //       resetPasswordExpires: { $gt: Date.now() },
+      //     },
+      //     function (err, user) {
+      //       if (!user) {
+      //         req.flash(
+      //           "info",
+      //           "Password reset token is invalid or has expired."
+      //         );
+      //         return res.redirect("back");
+      //       }
+
+      //       user.password = req.body.password;
+      //       user.resetPasswordToken = undefined;
+      //       user.resetPasswordExpires = undefined;
+
+      //       user.save(function (err) {
+      //         req.logIn(user, function (err) {
+      //           done(err, user);
+      //         });
+      //       });
+      //     }
+      //   );
+      // },
     ],
     function (err) {
       res.redirect("/feed");

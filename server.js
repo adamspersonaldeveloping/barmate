@@ -12,15 +12,16 @@ const mainRoutes = require("./routes/main");
 const postRoutes = require("./routes/posts");
 const forumRoutes = require("./routes/forum");
 const commentRoutes = require("./routes/comments");
-const bodyParser = require('body-parser')
-const nodemailer = require("nodemailer")
-const path = require('path')
-const passportLocalMongoose = require("passport-local-mongoose")
-const async = require("async")
+const bodyParser = require("body-parser");
+const nodemailer = require("nodemailer");
+const path = require("path");
+const passportLocalMongoose = require("passport-local-mongoose");
+const async = require("async");
+const User = require("./models/User");
 
 //bodyparser middleware
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 //Use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });
@@ -65,11 +66,21 @@ passport.serializeUser(function (user, done) {
   done(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
-  User.findById(id, function (err, user) {
-    done(err, user);
-  });
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user); //no error, provide the user object
+  } catch (err) {
+    done(err);
+  }
 });
+
+//mongoos no longer supports using callback functions in .findById()
+// passport.deserializeUser(function (id, done) {
+//   User.findById(id, function (err, user) {
+//     done(err, user);
+//   });
+// });
 
 //Use flash messages for errors, info, ect...
 app.use(flash());
@@ -78,9 +89,11 @@ app.use(flash());
 app.use("/", mainRoutes);
 app.use("/post", postRoutes);
 app.use("/forum", forumRoutes);
-app.use('/comment', commentRoutes)
+app.use("/comment", commentRoutes);
 
 //Server Running
 app.listen(process.env.PORT, () => {
-  console.log(`Server is running on PORT ${process.env.PORT}, you better catch it!`);
+  console.log(
+    `Server is running on PORT ${process.env.PORT}, you better catch it!`
+  );
 });

@@ -46,7 +46,6 @@ module.exports = {
     try {
       // Find comment by id
       let comment = await Comment.findById({ _id: req.params.id });
-      console.log(req);
       // Delete comment from db
       await comment.remove({ _id: req.params.id });
       console.log("Deleted Comment");

@@ -9,6 +9,7 @@ module.exports = {
     try {
       const forumPosts = await Forum.find().sort({ createdAt: "desc" }).lean();
       res.render("forum.ejs", { ForumPosts: forumPosts });
+      //added return for the test
       return forumPosts;
     } catch (err) {
       console.log(`Yikes, you ran into an error: ${err}`);

@@ -73,7 +73,7 @@ def main():
     # Create a list of cocktails by going over each url and scraping the data for the cocktails
     for url in url_list:
         cocktail = get_cocktail_data(driver, url)
-        cocktail_list.push(cocktail)
+        cocktail_list.append(cocktail)
 
     col.insert_many(cocktail_list)
 

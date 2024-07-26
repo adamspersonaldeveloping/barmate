@@ -1,10 +1,10 @@
 <%- include('partials/header') -%>
-<div class="container text-secondary">
+<div id="profilePageTest" class="container text-secondary">
   <div class="row mt-5">
       <div class="col-6">
           <div>
               <p><strong class="text-white">User Name</strong>: <%= user.userName %></p>
-              <p><strong class="text-white">Email</strong>: <%= user.email %></p>
+              <p id="profilePageUserEmail"><strong class="text-white">Email</strong>: <%= user.email %></p>
               <a href="/logout" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">Logout</a>
           </div>
           <div class="mt-5">

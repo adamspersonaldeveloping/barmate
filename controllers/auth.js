@@ -93,6 +93,7 @@ exports.postSignup = async (req, res, next) => {
   const userExists = await User.findOne({
     $or: [{ email: req.body.email }, { userName: req.body.userName }],
   });
+
   if (userExists) {
     req.flash("errors", {
       msg: "Account with that email address or username already exists.",
